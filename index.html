@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Bharat Solar - Rooftop solar installation, battery backup, repair, and solar calculator." />
+  <title>Bharat Solar</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --text: #162330;
+      --muted: #60707f;
+      --primary: #1662c8;
+      --primary-2: #2a86e8;
+      --sky: #79dfff;
+      --orange: #ff7b42;
+      --orange-2: #ff6230;
+      --green: #25d366;
+      --navy: #0d2f47;
+      --navy-2: #10263b;
+      --surface: rgba(255, 255, 255, 0.84);
+      --surface-2: rgba(255, 255, 255, 0.92);
+      --white: #ffffff;
+      --shadow: 0 18px 50px rgba(16, 59, 105, 0.14);
+      --shadow-soft: 0 10px 24px rgba(17, 54, 94, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
+      --container: min(1160px, calc(100% - 32px));
+      --section-space: clamp(64px, 8vw, 108px);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.75), transparent 28%),
+        linear-gradient(180deg, #8fd0ff 0%, #b9ebff 18%, #c8f2ff 100%);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Google Sans', 'Inter', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .btn,
+    button,
+    small,
+    .chip,
+    .eyebrow,
+    .nav-links a,
+    .call-pill,
+    .result-label,
+    .stat-label,
+    .tab-btn {
+      font-family: 'Montserrat', 'Inter', sans-serif;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+
+    .container { width: var(--container); margin: 0 auto; }
+    .section { padding: var(--section-space) 0; }
+
+    .site-shell {
+      width:100%;
+      margin:0;
+      border-radius:0;
+      box-shadow:none;
+
+      width: min(100%, calc(100% - 24px));
+      margin: 18px auto;
+      background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.14));
+      border: 1px solid rgba(255,255,255,0.55);
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(27, 79, 128, 0.18);
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+    }
+
+    .glass-card {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.62);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-soft);
+      border-radius: var(--radius-lg);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: linear-gradient(180deg, rgba(11,87,185,0.88), rgba(25,113,215,0.72));
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .nav {
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      position: relative;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      font-family: 'Google Sans', 'Inter', sans-serif;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .brand-mark::before { content: '☀'; font-size: 1.1rem; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      color: rgba(255,255,255,0.92);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 2px;
+      border-radius: 99px;
+      background: rgba(255,255,255,0.95);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.28s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after { transform: scaleX(1); }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+    }
+
+    .call-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 17px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.1));
+      border: 1px solid rgba(255,255,255,0.18);
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+      transition: transform 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .call-pill:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(8, 46, 98, 0.22), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      cursor: pointer;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.2);
+      font-size: 0.92rem;
+      /* font-weight: 700; */
+      color: rgba(255,255,255,0.95);
+    }
+
+    .eyebrow.alt {
+      background: rgba(22,98,200,0.08);
+      border-color: rgba(22,98,200,0.08);
+      color: var(--primary);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 56px 0 36px;
+      background:
+        radial-gradient(circle at 75% 10%, rgba(255,255,255,0.35), transparent 20%),
+        radial-gradient(circle at 15% 0%, rgba(120, 228, 255, 0.45), transparent 28%),
+        linear-gradient(180deg, #0f63ca 0%, #2e88e8 42%, #97e7ff 100%);
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      text-align: center;
+      margin: 0 auto 34px;
+      color: white;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 5vw, 4.6rem);
+      line-height: 1.03;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      max-width: 15ch;
+      margin-inline: auto;
+    }
+
+    .hero p {
+      margin: 20px auto 28px;
+      font-size: clamp(1rem, 1.6vw, 1.18rem);
+      max-width: 62ch;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 54px;
+      padding: 13px 24px;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.28s ease, box-shadow 0.28s ease, filter 0.28s ease, background 0.28s ease;
+      font-weight: 700;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      letter-spacing: 0.01em;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0));
+      opacity: 0;
+      transition: opacity 0.28s ease;
+      z-index: -1;
+    }
+
+    .btn:hover { transform: translateY(-3px); filter: saturate(1.05); }
+    .btn:hover::before,
+    .btn:focus-visible::before { opacity: 1; }
+    .btn:active { transform: translateY(-1px) scale(0.99); }
+    .btn:focus-visible { outline: 3px solid rgba(22, 98, 200, 0.18); outline-offset: 3px; }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, var(--orange) 0%, #ff874d 35%, var(--orange-2) 100%);
+      box-shadow: 0 16px 32px rgba(255, 104, 49, 0.28), inset 0 1px 0 rgba(255,255,255,0.22);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 20px 38px rgba(255, 104, 49, 0.34), inset 0 1px 0 rgba(255,255,255,0.28);
+    }
+
+    .btn-secondary {
+      color: white;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.22);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 24px rgba(12, 58, 116, 0.14), inset 0 1px 0 rgba(255,255,255,0.14);
+    }
+
+    .btn-secondary:hover {
+      box-shadow: 0 16px 30px rgba(12, 58, 116, 0.18), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    .hero-media {
+      position: relative;
+      border-radius: 26px;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.55);
+      box-shadow:
+        0 0 0 6px rgba(255,255,255,0.08),
+        0 30px 80px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.35);
+      backdrop-filter: blur(6px);
+    }
+
+    .hero-media::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 45%;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0.25) 55%,
+        rgba(0,0,0,0.55) 100%
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .play-btn {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+    }
+
+    .play-btn::before { content: '▶'; font-size: 1.45rem; margin-left: 4px; }
+
+    .stats,
+    .features-wrap,
+    .process-grid,
+    .gallery-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.stat-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+  border-radius: 18px;
+  padding: 26px 18px;
+  text-align: center;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.7);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 50px rgba(0,0,0,0.18);
+}
+
+.stat-number {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #0f2537;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  color: #5f6f7f;
+}
+
+@media (max-width: 900px) {
+  .stats {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}
+    .features-wrap { grid-template-columns: repeat(3, 1fr); }
+    .process-grid { grid-template-columns: repeat(3, 1fr); }
+    .gallery-grid { grid-template-columns: repeat(4, 1fr); }
+
+    .stat-card,
+    .feature-card,
+    .process-card,
+    .proof-content,
+    .team-intro,
+    .testimonial-main,
+    .testimonial-small,
+    .calculator-panel,
+    .calculator-results,
+    .contact-card {
+      padding: 28px;
+    }
+
+    .stat-card { text-align: center; }
+
+    .stat-value {
+      display: block;
+      font-size: clamp(1.3rem, 2vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 4px;
+      font-family: 'Google Sans', 'Inter', sans-serif;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-weight: 600;
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 28px;
+    }
+
+    .section-head h2 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .section-head p {
+      margin: 0 auto;
+      max-width: 62ch;
+      color: var(--muted);
+    }
+
+    .icon-badge {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(22,98,200,0.16), rgba(121,223,255,0.3));
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin-bottom: 18px;
+    }
+
+    .feature-card h3,
+    .process-card h3,
+    .service-content h3,
+    .proof-content h3,
+    .team-intro h3,
+    .testimonial-main h3,
+    .result-head h3 {
+      margin: 0 0 10px;
+      font-size: 1.18rem;
+      line-height: 1.2;
+    }
+
+    .feature-card p,
+    .process-card p,
+    .service-content p,
+    .proof-content p,
+    .team-intro p,
+    .testimonial-main p,
+    .testimonial-small p,
+    .contact-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .offer-grid,
+    .proof-grid,
+    .team-grid,
+    .testimonials-grid,
+    .calculator-wrap,
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .offer-grid { grid-template-columns: 260px 1fr; align-items: stretch; }
+
+    .offer-tabs,
+    .offer-panel { padding: 18px; }
+
+    .tabs { display: grid; gap: 10px; margin-top: 6px; }
+
+    .tab-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(22,98,200,0.08);
+      background: #f7fbff;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(22,98,200,0.14), rgba(121,223,255,0.28));
+      color: var(--primary);
+    }
+
+    .offer-panel {
+      display: grid;
+      grid-template-columns: 1.05fr 1.1fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .offer-panel img {
+      height: 100%;
+      min-height: 280px;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+
+    .service-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 18px 0 22px;
+    }
+
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #eff8ff, #f9fdff);
+      color: var(--primary);
+      font-size: 0.88rem;
+      font-weight: 700;
+      border: 1px solid rgba(22,98,200,0.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.72);
+    }
+
+    .step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 72px;
+      padding: 8px 12px;
+      margin-bottom: 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(22,98,200,0.14), rgba(121,223,255,0.3));
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .check-list,
+    .bill-list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .check-list li,
+    .bill-list li { position: relative; padding-left: 24px; }
+
+    .check-list li::before,
+    .bill-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #45bdd8;
+      font-weight: 800;
+    }
+
+    .bill-section { display: grid; gap: 28px; }
+
+    .bill-card {
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      min-height: 360px;
+      overflow: hidden;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.72));
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .bill-card--secondary {
+      grid-template-columns: 0.9fr 1.15fr;
+      min-height: 320px;
+    }
+
+    .bill-copy {
+      padding: clamp(28px, 4vw, 46px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.95));
+    }
+
+    .bill-copy h3 {
+      margin: 0 0 18px;
+      font-size: clamp(2rem, 3.7vw, 3.6rem);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+      max-width: 12ch;
+    }
+
+    .bill-copy p {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 52ch;
+    }
+
+    .bill-list { margin: 0 0 28px; gap: 14px; font-size: 1rem; color: #50616f; }
+
+    .bill-media { position: relative; overflow: hidden; }
+    .bill-media img { width: 100%; height: 100%; object-fit: cover; }
+
+    .bill-media--night::after {
+      content: '';
+      position: absolute;
+      right: -70px;
+      bottom: -40px;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(87,228,66,0.55), rgba(53,189,37,0.8) 55%, rgba(53,189,37,0) 70%);
+      pointer-events: none;
+    }
+
+    .gallery-card { overflow: hidden; position: relative; min-height: 320px; }
+    .gallery-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.45s ease;
+    }
+    .gallery-card:hover img { transform: scale(1.05); }
+
+    .gallery-card .overlay {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 18px;
+      color: white;
+      background: linear-gradient(180deg, transparent, rgba(8, 28, 48, 0.78));
+    }
+
+    .proof-visual,
+    .member-card,
+    .map-wrap { overflow: hidden; }
+    .proof-visual img,
+    .member-card img {
+      width: 100%;
+      height: 100%;
+      min-height: 360px;
+      object-fit: cover;
+    }
+
+    .member-grid,
+    .testimonial-side,
+    .lead-form,
+    .calc-grid,
+    .results-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .member-grid,
+    .testimonial-side,
+    .calc-grid,
+    .results-grid,
+    .lead-form { grid-template-columns: repeat(2, 1fr); }
+
+    .member-card { position: relative; min-height: 280px; }
+
+    .member-info {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 18px;
+      color: white;
+      background: linear-gradient(180deg, transparent, rgba(9, 24, 39, 0.84));
+    }
+
+    .member-info small { display: block; color: rgba(255,255,255,0.78); margin-top: 4px; }
+
+    .stars {
+      letter-spacing: 0.12em;
+      color: #f6a623;
+      font-size: 1rem;
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+
+    .quote {
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      line-height: 1.5;
+      color: var(--text);
+      margin: 0 0 20px;
+    }
+
+    .reviewer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .reviewer img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      min-height: unset;
+    }
+
+    .field { display: grid; gap: 8px; }
+    .field label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      font-family: 'Montserrat', 'Inter', sans-serif;
+    }
+
+    .field input,
+    .field select,
+    .lead-form textarea {
+      width: 100%;
+      min-height: 52px;
+      border: 1px solid rgba(22,98,200,0.12);
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: var(--text);
+      background: var(--surface-2);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .lead-form textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .lead-form textarea:focus {
+      border-color: rgba(22,98,200,0.5);
+      box-shadow: 0 0 0 4px rgba(22,98,200,0.08);
+    }
+
+    .input-icon { position: relative; }
+    .input-icon span {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-weight: 700;
+      pointer-events: none;
+    }
+    .input-icon input { padding-left: 40px; }
+
+    .calc-actions,
+    .contact-actions,
+    .cta-meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .calc-actions { margin-top: 22px; }
+    .contact-actions { margin-bottom: 18px; }
+    .cta-meta { justify-content: flex-end; }
+
+    .result-head p { margin: 0; color: var(--muted); }
+    .result-label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .result-card {
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(255,255,255,0.66);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .result-card strong {
+      font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      font-family: 'Google Sans', 'Inter', sans-serif;
+    }
+
+    .solar-note {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(22,98,200,0.1), rgba(121,223,255,0.22));
+      color: #315063;
+      font-weight: 500;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .reviews-showcase {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .review-feature,
+    .review-card {
+      padding: 28px;
+      background: rgba(255,255,255,0.94);
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.72);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .review-side-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .review-card-wide {
+      grid-column: 1 / -1;
+    }
+
+    .review-feature-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .review-feature-top--small h3 {
+      font-size: 1.05rem;
+      max-width: 18ch;
+    }
+
+    .review-metric {
+      font-family: 'Google Sans', 'Inter', sans-serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      line-height: 1;
+      font-weight: 800;
+      color: #111b26;
+      letter-spacing: -0.04em;
+      min-width: 88px;
+    }
+
+    .review-feature h3,
+    .review-card h3 {
+      margin: 0;
+      font-size: clamp(1.3rem, 2vw, 2rem);
+      line-height: 1.18;
+      color: #111b26;
+    }
+
+    .review-quote-mark {
+      color: #39b7d8;
+      font-size: 1.8rem;
+      line-height: 1;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+
+    .review-body {
+      color: #3e4c5a;
+      font-size: 1rem;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .review-body--compact {
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .review-footer {
+      margin-top: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .review-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .review-user img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      min-height: unset;
+      background: #eef2f7;
+    }
+
+    .review-user strong {
+      display: block;
+      font-size: 1.05rem;
+      color: #18222d;
+    }
+
+    .review-user small {
+      color: #6b7785;
+      font-size: 0.9rem;
+    }
+
+    .review-badge {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #f8fafc;
+      border: 1px solid #e6edf5;
+      color: #495869;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .reviews-cta {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .reviews-rating {
+      color: #334353;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+    }
+
+    .reviews-rating span {
+      color: #f5b400;
+      letter-spacing: 0.12em;
+      margin: 0 6px;
+    }
+
+    .cta-banner {
+      background: linear-gradient(135deg, #ff8d58 0%, #ff6b2f 100%);
+      color: white;
+      border-radius: 28px;
+      padding: 34px;
+      display: grid;
+      grid-template-columns: 1.2fr auto;
+      gap: 20px;
+      align-items: center;
+      box-shadow: 0 22px 38px rgba(255, 102, 45, 0.24);
+      margin-bottom: 18px;
+    }
+
+    .cta-banner h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .cta-contact {
+      padding: 14px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.24);
+      font-weight: 700;
+      transition: transform 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .cta-contact:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 26px rgba(192, 68, 21, 0.2);
+    }
+
+    footer {
+      margin-top: 28px;
+      background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+      color: rgba(255,255,255,0.82);
+      padding: 52px 0 20px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.2fr repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .footer-col h4 { margin: 0 0 16px; color: white; }
+    .footer-links { display: grid; gap: 10px; }
+
+    .footer-bottom {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 0.92rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1080px) {
+      .reviews-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .review-side-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .offer-grid,
+      .offer-panel,
+      .proof-grid,
+      .team-grid,
+      .testimonials-grid,
+      .calculator-wrap,
+      .contact-grid,
+      .footer-grid,
+      .cta-banner {
+        grid-template-columns: 1fr;
+      }
+
+      .stats,
+      .features-wrap,
+      .process-grid,
+      .gallery-grid,
+      .calc-grid,
+      .results-grid,
+      .lead-form {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .cta-meta { justify-content: flex-start; }
+    }
+
+    @media (max-width: 860px) {
+      .nav-links,
+      .nav-cta .call-pill:first-child { display: none; }
+
+      .menu-toggle {
+        display: inline-grid;
+        place-items: center;
+      }
+
+      .nav-links.open {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        top: calc(100% + 10px);
+        display: grid;
+        gap: 12px;
+        padding: 18px;
+        border-radius: 20px;
+        background: rgba(14, 69, 139, 0.96);
+        border: 1px solid rgba(255,255,255,0.14);
+        box-shadow: var(--shadow);
+      }
+
+      .member-grid,
+      .testimonial-side,
+      .bill-card,
+      .bill-card--secondary {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .review-side-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .review-feature-top {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .site-shell {
+        width: calc(100% - 12px);
+        margin: 6px auto;
+        border-radius: 20px;
+      }
+
+      .nav { min-height: 72px; }
+      .hero { padding-top: 34px; }
+      .hero-media { border-radius: 22px; }
+      .play-btn { width: 68px; height: 68px; }
+
+      .stats,
+      .features-wrap,
+      .process-grid,
+      .gallery-grid,
+      .calc-grid,
+      .results-grid,
+      .lead-form {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card,
+      .process-card,
+      .proof-content,
+      .team-intro,
+      .testimonial-main,
+      .testimonial-small,
+      .calculator-panel,
+      .calculator-results,
+      .contact-card {
+        padding: 22px;
+      }
+
+      .bill-copy h3 { font-size: clamp(1.8rem, 8vw, 2.8rem); }
+      .bill-card,
+      .bill-card--secondary { min-height: auto; }
+      .cta-banner { padding: 24px; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .section { padding: 56px 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="container nav">
+        <a href="#home" class="brand" aria-label="Bharat Solar home">
+          <span class="brand-mark"></span>
+          <span>BHARAT SOLAR</span>
+        </a>
+
+        <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+          <a href="#services">Services</a>
+          <a href="#process">How it works</a>
+          <a href="#installations">Installations</a>
+          <a href="#calculator">Calculator</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-cta">
+          <a class="call-pill" href="tel:+916393439816">📞 +91 63934 39816</a>
+          
+          <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="container">
+          <div class="hero-copy reveal">
+            <span class="eyebrow">⚡ Smart solar for modern homes</span>
+            <h1>Go Solar Today With Zero Upfront Costs!</h1>
+            <p>Affordable solar and battery solutions built for homeowners who want lower utility bills, energy security, and a cleaner future.</p>
+            <div class="actions">
+              <a href="#contact" class="btn btn-primary">Get a quote →</a>
+              <a href="#services" class="btn btn-secondary">Explore services</a>
+            </div>
+          </div>
+
+          <div class="hero-media reveal">
+            <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1600&q=80" alt="Modern home with rooftop solar panels">
+            <div class="play-btn" aria-hidden="true"></div>
+          </div>
+
+          <div class="stats reveal" aria-label="Company highlights">
+            <article class="glass-card stat-card"><span class="stat-value" data-count="2500">0</span><span class="stat-label">Projects completed</span></article>
+            <article class="glass-card stat-card"><span class="stat-value" data-count="18">0</span><span class="stat-label">Years of experience</span></article>
+            <article class="glass-card stat-card"><span class="stat-value" data-count="98">0</span><span class="stat-label">Customer satisfaction</span></article>
+            <article class="glass-card stat-card"><span class="stat-value" data-count="24">0</span><span class="stat-label">Rapid support</span></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="services">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow alt">Our Solutions</span>
+            <h2>Ready to cut your energy bill?</h2>
+            <p>Everything you need to design, install, finance, and maintain a high-performance solar setup for your home.</p>
+          </div>
+
+          <div class="features-wrap reveal">
+            <article class="feature-card glass-card">
+              <div class="icon-badge">🔋</div>
+              <h3>Lower your bill</h3>
+              <p>Reduce dependence on rising utility costs with premium solar systems engineered for everyday efficiency and long-term savings.</p>
+            </article>
+            <article class="feature-card glass-card">
+              <div class="icon-badge">🏠</div>
+              <h3>Battery backup systems</h3>
+              <p>Store excess energy for outages, evening use, and smarter energy management without compromising comfort or reliability.</p>
+            </article>
+            <article class="feature-card glass-card">
+              <div class="icon-badge">🛠</div>
+              <h3>Personalized service</h3>
+              <p>From consultation to post-install support, our team tailors every system to your property and budget.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow alt">Best Offer</span>
+            <h2>Best offer for renewable energy</h2>
+            <p>Choose a service that fits your current needs and scale your system as your home grows.</p>
+          </div>
+
+          <div class="offer-grid reveal">
+            <aside class="offer-tabs glass-card">
+              <div class="tabs" role="tablist" aria-label="Solar services">
+                <button class="tab-btn active" type="button" role="tab" aria-selected="true" data-service="repair">Solar system repair</button>
+                <button class="tab-btn" type="button" role="tab" aria-selected="false" data-service="install">Solar install</button>
+                <button class="tab-btn" type="button" role="tab" aria-selected="false" data-service="removal">Solar panel removal</button>
+                <button class="tab-btn" type="button" role="tab" aria-selected="false" data-service="battery">Battery backup</button>
+              </div>
+            </aside>
+
+            <article class="offer-panel glass-card">
+              <img id="serviceImage" src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=1200&q=80" alt="Solar technicians working on a roof">
+              <div class="service-content">
+                <span class="eyebrow alt" style="margin-bottom:14px;">Selected service</span>
+                <h3 id="serviceTitle">Fast, reliable repair for existing solar systems</h3>
+                <p id="serviceText">From inverter issues to reduced output and panel diagnostics, our certified team quickly restores performance and protects your long-term savings.</p>
+                <div class="service-meta" id="serviceMeta">
+                  <span class="chip">System diagnostics</span>
+                  <span class="chip">Inverter repair</span>
+                  <span class="chip">Performance checks</span>
+                </div>
+                <a href="#contact" class="btn btn-primary">Get started →</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="process">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow alt">4 Steps Process</span>
+            <h2>Our simple three-step solar process</h2>
+            <p>We make switching to solar straightforward, transparent, and stress-free from first call to final activation.</p>
+          </div>
+
+          <div class="process-grid reveal">
+            <article class="process-card glass-card">
+              <span class="step">STEP 01</span>
+              <h3>Connect</h3>
+              <p>Start with a free consultation so we can understand your property, goals, and monthly energy usage.</p>
+              <ul class="check-list">
+                <li>Property review</li>
+                <li>Roof and shading analysis</li>
+                <li>Budget-friendly financing options</li>
+              </ul>
+            </article>
+            <article class="process-card glass-card">
+              <span class="step">STEP 02</span>
+              <h3>Design</h3>
+              <p>We create a tailored proposal with estimated savings, equipment choices, and clear project milestones.</p>
+              <ul class="check-list">
+                <li>Customized system design</li>
+                <li>Permits and utility coordination</li>
+                <li>Transparent timeline</li>
+              </ul>
+            </article>
+            <article class="process-card glass-card">
+              <span class="step">STEP 03</span>
+              <h3>Install</h3>
+              <p>Our trained installers handle the full build, testing, and activation so you can power up with confidence.</p>
+              <ul class="check-list">
+                <li>Certified installation crew</li>
+                <li>Inspection and activation</li>
+                <li>Monitoring and support</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow alt">What We Do</span>
+            <h2>Ready to cut your energy bills</h2>
+            <p>Battery systems help lower your electric bill by providing power to your home day and night.</p>
+          </div>
+
+          <div class="bill-section reveal">
+            <article class="bill-card">
+              <div class="bill-copy">
+                <h3>Charge your home battery by day..</h3>
+                <ul class="bill-list">
+                  <li>Store solar energy during daylight for use when it's needed.</li>
+                  <li>Avoid peak utility rates by using your battery after sunset.</li>
+                  <li>Lock in predictable pricing and reduce grid reliance.</li>
+                  <li>Put solar panels on your roof.</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary">Get a Quote ↗</a>
+              </div>
+              <div class="bill-media bill-media--night">
+                <img src="https://images.unsplash.com/photo-1723046106153-8d3810267931?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="House at night with solar panels on the roof">
+              </div>
+            </article>
+
+            <article class="bill-card bill-card--secondary">
+              <div class="bill-media">
+                <img src="https://images.unsplash.com/photo-1668097613572-40b7c11c8727?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Technician installing solar panels on a rooftop">
+              </div>
+              <div class="bill-copy">
+                <h3>Beat future utility bill increases.</h3>
+                <p>Take control of your power. Instead of having a fluctuating cost from your utility company, have a fixed and predictable price you can count on for the next 25+ years.</p>
+                <a href="#contact" class="btn btn-primary">Reduce your bill ↗</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="installations">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow alt">Installations</span>
+            <h2>Discover our recent solar installations</h2>
+            <p>See how our systems look across different homes, roof styles, and energy goals.</p>
+          </div>
+
+          <div class="gallery-grid reveal">
+            <article class="gallery-card glass-card"><img src="https://images.unsplash.com/photo-1497440001374-f26997328c1b?auto=format&fit=crop&w=1000&q=80" alt="Residential solar installation on a modern roof"><div class="overlay"><strong>Residential Rooftop</strong><br><small>High-output panel array</small></div></article>
+            <article class="gallery-card glass-card"><img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1000&q=80" alt="Solar panel installation with angled roof design"><div class="overlay"><strong>Backyard System</strong><br><small>Clean design, efficient layout</small></div></article>
+            <article class="gallery-card glass-card"><img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1000&q=80" alt="Solar panels installed on a family home"><div class="overlay"><strong>Family Home</strong><br><small>Battery-ready installation</small></div></article>
+            <article class="gallery-card glass-card"><img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1000&q=80" alt="Technician installing solar panels on the roof"><div class="overlay"><strong>Precision Roofing</strong><br><small>Installed by certified crew</small></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="calculator">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow alt">Solar Calculator</span>
+            <h2>Estimate your ideal solar system in minutes</h2>
+            <p>Enter a few home and electricity details to estimate panel size, roof area, battery backup, monthly savings, and daily energy generation.</p>
+          </div>
+
+          <div class="calculator-wrap reveal">
+            <article class="calculator-panel glass-card">
+              <div class="calc-grid">
+                <div class="field">
+                  <label for="monthlyBill">Monthly electricity bill</label>
+                  <div class="input-icon"><span>₹</span><input type="number" id="monthlyBill" placeholder="3000" min="0" value="3000"></div>
+                </div>
+                <div class="field">
+                  <label for="tariffRate">Electricity tariff per unit</label>
+                  <div class="input-icon"><span>₹</span><input type="number" id="tariffRate" placeholder="8" min="1" step="0.1" value="8"></div>
+                </div>
+                <div class="field">
+                  <label for="sunHours">Average daily sun hours</label>
+                  <div class="input-icon"><span>☀</span><input type="number" id="sunHours" placeholder="5.5" min="1" max="10" step="0.1" value="5.5"></div>
+                </div>
+                <div class="field">
+                  <label for="roofArea">Available roof area (sq ft)</label>
+                  <div class="input-icon"><span>⌂</span><input type="number" id="roofArea" placeholder="600" min="50" value="600"></div>
+                </div>
+                <div class="field">
+                  <label for="backupHours">Backup hours needed</label>
+                  <div class="input-icon"><span>🔋</span><input type="number" id="backupHours" placeholder="4" min="0" max="24" step="0.5" value="4"></div>
+                </div>
+                <div class="field">
+                  <label for="homeType">Home type</label>
+                  <select id="homeType">
+                    <option value="apartment">Apartment</option>
+                    <option value="small" selected>Small family home</option>
+                    <option value="medium">Medium family home</option>
+                    <option value="large">Large home / villa</option>
+                  </select>
+                </div>
+              </div>
+              <div class="calc-actions">
+                <button class="btn btn-primary" id="calculateSolar" type="button">Calculate now →</button>
+                <button class="btn btn-secondary" id="resetSolar" type="button">Reset</button>
+              </div>
+            </article>
+
+            <article class="calculator-results glass-card">
+              <div class="result-head">
+                <h3>Your solar estimate</h3>
+                <p>These numbers are approximate and helpful for planning. Final system size depends on roof direction, shading, panel type, and appliance usage.</p>
+              </div>
+              <div class="results-grid">
+                <div class="result-card"><span class="result-label">Recommended system</span><strong id="systemSize">4.7 kW</strong></div>
+                <div class="result-card"><span class="result-label">Approx panel count</span><strong id="panelCount">9 panels</strong></div>
+                <div class="result-card"><span class="result-label">Roof area needed</span><strong id="areaNeeded">180 sq ft</strong></div>
+                <div class="result-card"><span class="result-label">Daily generation</span><strong id="dailyGeneration">25.9 kWh</strong></div>
+                <div class="result-card"><span class="result-label">Monthly savings</span><strong id="monthlySavings">₹2,700</strong></div>
+                <div class="result-card"><span class="result-label">Estimated battery</span><strong id="batterySize">5.0 kWh</strong></div>
+              </div>
+              <div class="solar-note" id="solarNote">This roof area looks suitable for the recommended system, and your expected savings could offset most of your monthly bill.</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="reviews">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow alt">⚡ Testimonials</span>
+            <h2>Trusted by Our Kanpur Customers</h2>
+            <p>We’re proud to help homes and businesses reduce electricity costs. Here’s what local customers are saying about Bharat Solar.</p>
+          </div>
+
+          <div class="reviews-showcase reveal">
+            <article class="review-feature glass-card">
+              <div class="review-feature-top">
+                <div class="review-metric">90%</div>
+                <h3>drop in electricity bill within 2 months</h3>
+              </div>
+              <div class="review-quote-mark">❝</div>
+              <p class="review-body">These folks are great to work with! Everyone who came out here was friendly, professional, and detail-oriented. They explained things in a way we could understand and never felt pushy. They followed up after the installation to make sure everything was working properly. I’ve already referred Bharat Solar to friends and family.</p>
+              <div class="review-footer">
+                <div class="review-user">
+                  <img src="https://ui-avatars.com/api/?name=Ramesh+Sharma&background=e8eef7&color=1f2b3a&size=128" alt="Ramesh Sharma">
+                  <div>
+                    <strong>Ramesh Sharma</strong>
+                    <small>4 weeks ago</small>
+                  </div>
+                </div>
+                <div class="review-badge">Google ★ 5 star</div>
+              </div>
+            </article>
+
+            <div class="review-side-grid">
+              <article class="review-card glass-card review-card-wide">
+                <div class="review-feature-top review-feature-top--small">
+                  <div class="review-metric">10X</div>
+                  <h3>I would highly recommend Bharat Solar!</h3>
+                </div>
+                <div class="review-quote-mark">❝</div>
+                <p class="review-body">The Bharat Solar team was trustworthy, skilled, and persistent in finishing my rooftop solar setup at a very reasonable price. The work was completed on time and I am very happy with the team’s work and final output.</p>
+                <div class="review-footer">
+                  <div class="review-user">
+                    <img src="https://ui-avatars.com/api/?name=Mariah+H&background=f7d9d9&color=7d1f1f&size=128" alt="Mariah H">
+                    <div>
+                      <strong>Mariah H</strong>
+                      <small>4 weeks ago</small>
+                    </div>
+                  </div>
+                  <div class="review-badge">Google ★ 5 star</div>
+                </div>
+              </article>
+
+              <article class="review-card glass-card">
+                <div class="review-quote-mark">❝</div>
+                <p class="review-body review-body--compact">I would highly recommend Bharat Solar! The team was trustworthy, skilled and persistent in finishing my solar unit very professionally. Great support even after installation.</p>
+                <div class="review-footer">
+                  <div class="review-user">
+                    <img src="https://ui-avatars.com/api/?name=Kevin+Celedon&background=f79c42&color=ffffff&size=128" alt="Kevin Celedon">
+                    <div>
+                      <strong>Kelash</strong>
+                      <small>4 weeks ago</small>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="review-card glass-card">
+                <div class="review-quote-mark">❝</div>
+                <p class="review-body review-body--compact">I would highly recommend Bharat Solar. The process was smooth, the staff was patient, and the installation quality was excellent. My electricity savings are already noticeable.</p>
+                <div class="review-footer">
+                  <div class="review-user">
+                    <img src="https://ui-avatars.com/api/?name=Kunal+Mishra&background=f79c42&color=ffffff&size=128" alt="Kunal Mishra">
+                    <div>
+                      <strong>Kunal Mishra</strong>
+                      <small>4 weeks ago</small>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="reviews-cta reveal">
+            <div class="reviews-rating">Excellent <span>★★★★★</span> rating based on local customer reviews</div>
+            <a href="#contact" class="btn" style="background:var(--navy); color:white;">Read all reviews ↗</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="container reveal">
+          <div class="cta-banner">
+            <div>
+              <h3>We are a local solar business and always available to answer your questions</h3>
+              <p style="margin:0; color:rgba(255,255,255,0.88); max-width:60ch;">Speak with the Bharat Solar team today for a personalized solar consultation, transparent quote, and quick WhatsApp support.</p>
+            </div>
+            <div class="cta-meta">
+              <a href="#lead-form" class="btn" style="background:white; color:var(--orange-2);">Get a quote →</a>
+              
+            </div>
+          </div>
+
+          <div class="contact-grid" style="grid-template-columns:1fr; max-width:900px; margin:0 auto;">
+            <article class="glass-card contact-card" id="lead-form" style="width:100%;">
+              <span class="eyebrow alt" style="margin-bottom:14px;">Quick Inquiry</span>
+              <h3 style="margin:0 0 12px; font-size:clamp(1.5rem,2.8vw,2.2rem);">Get your free solar consultation</h3>
+              <p style="margin:0 0 20px; color:var(--muted);">Fill the form and send your details instantly on WhatsApp.</p>
+              <form id="solarLeadForm" class="lead-form" style="width:100%;">
+                <div class="field">
+                  <label for="leadName">Full name</label>
+                  <input type="text" id="leadName" placeholder="Enter your name" required>
+                </div>
+                <div class="field">
+                  <label for="leadPhone">Phone number</label>
+                  <input type="tel" id="leadPhone" placeholder="Enter your phone number" required>
+                </div>
+                <div class="field">
+                  <label for="leadCity">City / Area</label>
+                  <input type="text" id="leadCity" placeholder="Kanpur, Lucknow, etc.">
+                </div>
+                <div class="field">
+                  <label for="leadBill">Monthly electricity bill</label>
+                  <input type="number" id="leadBill" placeholder="3000">
+                </div>
+                <div class="field" style="grid-column:1 / -1;">
+                  <label for="leadMessage">Requirement</label>
+                  <textarea id="leadMessage" rows="4" placeholder="Tell us about your requirement: rooftop solar, battery backup, service, installation, etc."></textarea>
+                </div>
+                <div class="calc-actions" style="grid-column:1 / -1;">
+                  <button type="submit" class="btn btn-primary">Send on WhatsApp →</button>
+                  <a href="tel:+916393439816" class="btn btn-secondary" style="color:var(--text); border-color:rgba(22,98,200,0.12); background:rgba(255,255,255,0.8);">Call instead</a>
+                </div>
+              </form>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="brand" style="color:white; margin-bottom:14px;"><span class="brand-mark"></span><span>BHARAT SOLAR</span></div>
+            <p>Reliable local solar design, installation, repair, and battery solutions for modern homes.</p>
+          </div>
+          <div class="footer-col">
+            <h4>Services</h4>
+            <div class="footer-links">
+              <a href="#services">Solar installation</a>
+              <a href="#services">Battery backup</a>
+              <a href="#services">System repair</a>
+              <a href="#services">Panel removal</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Company</h4>
+            <div class="footer-links">
+              <a href="#process">How it works</a>
+              <a href="#installations">Installations</a>
+              <a href="#calculator">Calculator</a>
+              <a href="#contact">Contact</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <div class="footer-links">
+              <a href="tel:+916393439816">+91 63934 39816</a>
+              <a href="https://wa.me/916393439816" target="_blank" rel="noopener noreferrer">WhatsApp Chat</a>
+              <span>926A, Opposite E Bus Stand, Sanjeev Nagar 2nd, Kanpur - 208007</span>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 Bharat Solar. All rights reserved.</span>
+          <span>Built with responsive HTML, CSS, and vanilla JavaScript.</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (() => {
+      const menuToggle = document.getElementById('menuToggle');
+      const navLinks = document.getElementById('navLinks');
+
+      if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', () => {
+          navLinks.classList.toggle('open');
+          menuToggle.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
+        });
+
+        navLinks.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', () => {
+            navLinks.classList.remove('open');
+            menuToggle.textContent = '☰';
+          });
+        });
+      }
+
+      const services = {
+        repair: {
+          title: 'Fast, reliable repair for existing solar systems',
+          text: 'From inverter issues to reduced output and panel diagnostics, our certified team quickly restores performance and protects your long-term savings.',
+          image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=1200&q=80',
+          chips: ['System diagnostics', 'Inverter repair', 'Performance checks']
+        },
+        install: {
+          title: 'Custom solar installs designed for your roof and budget',
+          text: 'We build efficient residential systems using high-quality panels, intelligent layout planning, and a seamless installation experience.',
+          image: 'https://images.unsplash.com/photo-1497440001374-f26997328c1b?auto=format&fit=crop&w=1200&q=80',
+          chips: ['Roof design', 'Permit support', 'Premium equipment']
+        },
+        removal: {
+          title: 'Safe solar panel removal for roofing or upgrades',
+          text: 'Whether you need reroofing, panel relocation, or full replacement, we handle disassembly, storage, and reinstallation with care.',
+          image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1200&q=80',
+          chips: ['Panel relocation', 'Roofing coordination', 'Reinstall options']
+        },
+        battery: {
+          title: 'Battery backup solutions for energy independence',
+          text: 'Capture excess production, keep essential appliances running during outages, and control more of your home energy usage.',
+          image: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?auto=format&fit=crop&w=1200&q=80',
+          chips: ['Backup power', 'Load planning', 'Peak-hour savings']
+        }
+      };
+
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const serviceTitle = document.getElementById('serviceTitle');
+      const serviceText = document.getElementById('serviceText');
+      const serviceImage = document.getElementById('serviceImage');
+      const serviceMeta = document.getElementById('serviceMeta');
+
+      tabButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          tabButtons.forEach((b) => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-selected', 'true');
+          const selected = services[btn.dataset.service];
+          if (!selected) return;
+          serviceTitle.textContent = selected.title;
+          serviceText.textContent = selected.text;
+          serviceImage.src = selected.image;
+          serviceMeta.innerHTML = selected.chips.map((chip) => `<span class="chip">${chip}</span>`).join('');
+        });
+      });
+
+      const monthlyBillInput = document.getElementById('monthlyBill');
+      const tariffRateInput = document.getElementById('tariffRate');
+      const sunHoursInput = document.getElementById('sunHours');
+      const roofAreaInput = document.getElementById('roofArea');
+      const backupHoursInput = document.getElementById('backupHours');
+      const homeTypeInput = document.getElementById('homeType');
+      const calculateSolarBtn = document.getElementById('calculateSolar');
+      const resetSolarBtn = document.getElementById('resetSolar');
+
+      const systemSizeEl = document.getElementById('systemSize');
+      const panelCountEl = document.getElementById('panelCount');
+      const areaNeededEl = document.getElementById('areaNeeded');
+      const dailyGenerationEl = document.getElementById('dailyGeneration');
+      const monthlySavingsEl = document.getElementById('monthlySavings');
+      const batterySizeEl = document.getElementById('batterySize');
+      const solarNoteEl = document.getElementById('solarNote');
+
+      function formatCurrency(value) {
+        return new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(Math.round(value));
+      }
+
+      function calculateSolarEstimate(inputs) {
+        const monthlyBill = Number(inputs.monthlyBill) || 0;
+        const tariffRate = Math.max(1, Number(inputs.tariffRate) || 8);
+        const sunHours = Math.max(1, Number(inputs.sunHours) || 5.5);
+        const roofArea = Math.max(0, Number(inputs.roofArea) || 0);
+        const backupHours = Math.max(0, Number(inputs.backupHours) || 0);
+        const homeType = inputs.homeType || 'small';
+
+        const homeMultiplierMap = { apartment: 0.9, small: 1, medium: 1.12, large: 1.28 };
+        const homeMultiplier = homeMultiplierMap[homeType] || 1;
+        const monthlyUnits = monthlyBill / tariffRate;
+        const dailyUnits = monthlyUnits / 30;
+        const rawSystemSize = (dailyUnits / (sunHours * 0.75)) * homeMultiplier;
+        const systemSize = Math.max(1, rawSystemSize);
+        const panelCount = Math.ceil(systemSize / 0.54);
+        const areaNeeded = panelCount * 20;
+        const dailyGeneration = systemSize * sunHours;
+        const monthlySavings = Math.min(monthlyBill * 0.9, dailyGeneration * 30 * tariffRate * 0.82);
+        const batterySize = Math.max(2, (dailyUnits * 0.35) * Math.max(backupHours / 4, 1));
+
+        let note = 'This roof area looks suitable for the recommended system, and your expected savings could offset most of your monthly bill.';
+        if (roofArea < areaNeeded) {
+          note = `Your estimated requirement is about ${Math.round(areaNeeded)} sq ft, which is more than the ${Math.round(roofArea)} sq ft roof area entered. You may need higher-efficiency panels or partial bill offset planning.`;
+        } else if (backupHours >= 8) {
+          note = `Because you selected ${backupHours} backup hours, a larger battery system may be useful for stronger night-time and outage support.`;
+        } else if (monthlyBill < 1500) {
+          note = 'Your current bill suggests a compact solar system may be enough. This can still provide meaningful savings with a smaller investment.';
+        }
+
+        return {
+          systemSize: `${systemSize.toFixed(1)} kW`,
+          panelCount: `${panelCount} panels`,
+          areaNeeded: `${Math.round(areaNeeded)} sq ft`,
+          dailyGeneration: `${dailyGeneration.toFixed(1)} kWh`,
+          monthlySavings: `₹${formatCurrency(monthlySavings)}`,
+          batterySize: `${batterySize.toFixed(1)} kWh`,
+          note
+        };
+      }
+
+      function renderSolarEstimate() {
+        const result = calculateSolarEstimate({
+          monthlyBill: monthlyBillInput.value,
+          tariffRate: tariffRateInput.value,
+          sunHours: sunHoursInput.value,
+          roofArea: roofAreaInput.value,
+          backupHours: backupHoursInput.value,
+          homeType: homeTypeInput.value
+        });
+
+        systemSizeEl.textContent = result.systemSize;
+        panelCountEl.textContent = result.panelCount;
+        areaNeededEl.textContent = result.areaNeeded;
+        dailyGenerationEl.textContent = result.dailyGeneration;
+        monthlySavingsEl.textContent = result.monthlySavings;
+        batterySizeEl.textContent = result.batterySize;
+        solarNoteEl.textContent = result.note;
+      }
+
+      calculateSolarBtn?.addEventListener('click', renderSolarEstimate);
+      resetSolarBtn?.addEventListener('click', () => {
+        monthlyBillInput.value = 3000;
+        tariffRateInput.value = 8;
+        sunHoursInput.value = 5.5;
+        roofAreaInput.value = 600;
+        backupHoursInput.value = 4;
+        homeTypeInput.value = 'small';
+        renderSolarEstimate();
+      });
+      renderSolarEstimate();
+
+      const solarLeadForm = document.getElementById('solarLeadForm');
+      solarLeadForm?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const name = document.getElementById('leadName')?.value.trim() || '';
+        const phone = document.getElementById('leadPhone')?.value.trim() || '';
+        const city = document.getElementById('leadCity')?.value.trim() || '';
+        const bill = document.getElementById('leadBill')?.value.trim() || '';
+        const message = document.getElementById('leadMessage')?.value.trim() || '';
+        const text = encodeURIComponent(`Hello Bharat Solar,\n\nName: ${name}\nPhone: ${phone}\nCity/Area: ${city}\nMonthly Bill: ${bill}\nRequirement: ${message}\n\nI want a solar consultation.`);
+        window.open(`https://wa.me/916393439816?text=${text}`, '_blank');
+      });
+
+      window.__solarTests = () => {
+        const t1 = calculateSolarEstimate({ monthlyBill: 3000, tariffRate: 8, sunHours: 5.5, roofArea: 600, backupHours: 4, homeType: 'small' });
+        console.assert(t1.systemSize.endsWith('kW'), 'System size should be in kW');
+        console.assert(t1.panelCount.includes('panels'), 'Panel count should contain panels');
+        const t2 = calculateSolarEstimate({ monthlyBill: 1200, tariffRate: 8, sunHours: 5, roofArea: 120, backupHours: 2, homeType: 'apartment' });
+        console.assert(t2.note.toLowerCase().includes('compact') || t2.note.toLowerCase().includes('roof area'), 'Low bill case should produce a helpful note');
+        const t3 = calculateSolarEstimate({ monthlyBill: 7000, tariffRate: 9, sunHours: 4.5, roofArea: 200, backupHours: 10, homeType: 'large' });
+        console.assert(t3.note.toLowerCase().includes('roof area') || t3.note.toLowerCase().includes('backup'), 'High demand case should produce a roof or backup note');
+        return 'Solar calculator tests passed';
+      };
+
+      const counters = document.querySelectorAll('[data-count]');
+      const animateCounter = (entry) => {
+        const target = Number(entry.dataset.count);
+        let current = 0;
+        const step = Math.max(1, Math.ceil(target / 60));
+        const update = () => {
+          current += step;
+          if (current >= target) current = target;
+          if (target === 98) entry.textContent = `${current}%`;
+          else if (target === 24) entry.textContent = `${current}/7`;
+          else if (target === 18) entry.textContent = `${current}+`;
+          else entry.textContent = `${current.toLocaleString()}+`;
+          if (current < target) requestAnimationFrame(update);
+        };
+        update();
+      };
+
+      const revealEls = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            if (entry.target.classList.contains('stats')) counters.forEach((counter) => animateCounter(counter));
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18 });
+
+      revealEls.forEach((el) => observer.observe(el));
+    })();
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Bharat Solar",
+    "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1600&q=80",
+    "telephone": "+91 63934 39816",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "926A, Opposite E Bus Stand, Sanjeev Nagar 2nd",
+      "addressLocality": "Kanpur",
+      "postalCode": "208007",
+      "addressCountry": "IN"
+    },
+    "areaServed": "Kanpur and nearby regions",
+    "priceRange": "₹₹",
+    "sameAs": ["https://wa.me/916393439816"]
+  }
+  </script>
+</body>
+</html>
